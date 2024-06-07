@@ -44,12 +44,14 @@ const setStrAsValue = (valueStr) => {
         return
     }
 
+    valueEl.textContent = parseFloat(valueStr).toLocaleString("en-US")
+
     const [wholeNumStr, decimalStr] = valueStr.split('.')
     // console.log(wholeNumStr, decimalStr);
     if (decimalStr) {
-        valueEl.textContent = parseFloat(wholeNumStr).toLocaleString() + '.' + decimalStr
+        valueEl.textContent = parseFloat(wholeNumStr).toLocaleString("en-US") + '.' + decimalStr
     } else {
-        valueEl.textContent = parseFloat(wholeNumStr).toLocaleString()
+        valueEl.textContent = parseFloat(wholeNumStr).toLocaleString("en-US")
 
     }
 }
@@ -63,6 +65,31 @@ const handleNumberClick = (numStr) => {
         setStrAsValue(currentValueStr + numStr)
     }
 }
+
+
+
+// Add Event Listeners to functions
+
+acEl.addEventListener('click', () => {
+    setStrAsValue('0')
+})
+
+pmEl.addEventListener("click", () => {
+    const currentValueNum = getValueAsNum()
+    const currentValueStr = getValueAsStr()
+    if (currentValueNum > 0) {
+        setStrAsValue('-' + currentValueStr)
+    } else {
+        setStrAsValue(currentValueStr.substring(1))
+        
+    }
+})
+
+percentEl.addEventListener("click", () => {
+    const currentValueNum = getValueAsNum()
+    const newValueNum = currentValueNum / 100
+    setStrAsValue(newValueNum.toString())
+})
 
 //? Add Event Listeners to numbers and decimal
 
