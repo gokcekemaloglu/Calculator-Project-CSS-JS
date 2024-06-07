@@ -30,6 +30,11 @@ const numberElArray = [
     number0El, number1El, number2El, number3El, number4El, number5El, number6El, number7El, number8El, number9El
 ]
 
+// variables
+
+let valueStrInMemory = null
+let operatorInMemory = null
+
 //! Functions
 
 const getValueAsStr = () => valueEl.textContent.split(',').join('')
@@ -66,19 +71,60 @@ const handleNumberClick = (numStr) => {
     }
 }
 
+const getResultOfOpeartionAsStr = () => {
+    const currentValueNum = getValueAsNum()
+    const valueNumInMemory = parseFloat(valueStrInMemory)
+    let newValueNum
+
+    if (operatorInMemory === "addition") {
+        newValueNum = valueNumInMemory + currentValueNum
+    } else if (operatorInMemory === "subtraction") {
+        newValueNum = valueNumInMemory - currentValueNum
+    }else if (operatorInMemory === "multiplication") {
+        newValueNum = valueNumInMemory * currentValueNum
+    }else if (operatorInMemory === "division") {
+        newValueNum = valueNumInMemory / currentValueNum
+    }
+
+    return newValueNum.toString()
+}
+
+const handleOperatorClick = (operation) => {
+    const currentValueStr = getValueAsStr()
+
+    if (!valueStrInMemory) {
+        valueStrInMemory = currentValueStr
+        operatorInMemory = operation
+        setStrAsValue("0")
+        return
+    } 
+    valueStrInMemory = getResultOfOpeartionAsStr()
+    operatorInMemory = operation
+    setStrAsValue("0")
+}
 
 
-// Add Event Listeners to functions
 
-acEl.addEventListener('click', () => {
-    setStrAsValue('0')
+//? Add Event Listeners to functions
+
+acEl.addEventListener("click", () => {
+    setStrAsValue("0")
+    valueStrInMemory = null
+    operatorInMemory = null
 })
 
 pmEl.addEventListener("click", () => {
     const currentValueNum = getValueAsNum()
     const currentValueStr = getValueAsStr()
-    if (currentValueNum > 0) {
-        setStrAsValue('-' + currentValueStr)
+    console.log(currentValueStr);
+
+    if (currentValueStr ==="-0") {
+        setStrAsValue("0")
+        return
+    }
+    if (currentValueNum >= 0) {
+        console.log("-" + currentValueStr);
+        setStrAsValue("-" + currentValueStr)
     } else {
         setStrAsValue(currentValueStr.substring(1))
         
@@ -89,7 +135,38 @@ percentEl.addEventListener("click", () => {
     const currentValueNum = getValueAsNum()
     const newValueNum = currentValueNum / 100
     setStrAsValue(newValueNum.toString())
+    valueStrInMemory = null
+    operatorInMemory = null
 })
+
+//? Add Event Listeners to operators
+
+additionEl.addEventListener("click", () => {
+    handleOperatorClick("addition")
+})
+
+subtractionEl.addEventListener("click", () => {
+    handleOperatorClick("subtraction")
+})
+
+multiplicationEl.addEventListener("click", () => {
+    handleOperatorClick("multiplication")
+})
+
+divisionEl.addEventListener("click", () => {
+    handleOperatorClick("division")
+})
+
+equalEl.addEventListener("click",() => {
+    if (valueStrInMemory) {
+        setStrAsValue(getResultOfOpeartionAsStr())
+        valueStrInMemory = null
+        operatorInMemory = null
+    } 
+})
+
+
+
 
 //? Add Event Listeners to numbers and decimal
 
