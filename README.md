@@ -9,7 +9,7 @@ The app will be able to perform calculations and display the results on the scre
 
 01-calculator(folder)
 |
-|----readme.md         # Given to the students (Definition of the project)          
+|----readme.md                   
 |----solution
         |----index.html  
         |----style.css   
